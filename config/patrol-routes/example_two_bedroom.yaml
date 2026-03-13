@@ -1,0 +1,37 @@
+# Example patrol route for a two-bedroom house
+patrol:
+  name: "full_house"
+  schedule: "*/30 * * * *"  # Every 30 minutes
+  speed: 0.2  # m/s
+  detect_objects: true
+  detect_faces: true
+
+  rooms:
+    - name: "living_room"
+      waypoints:
+        - {x: 1.0, y: 2.0}  # Near the couch
+        - {x: 3.0, y: 2.0}  # Near the TV
+        - {x: 2.0, y: 4.0}  # Near the bookshelf
+      dwell_seconds: 5  # Pause to scan at each waypoint
+
+    - name: "kitchen"
+      waypoints:
+        - {x: 5.0, y: 1.0}  # Near the counter
+        - {x: 6.0, y: 3.0}  # Near the table
+      dwell_seconds: 5
+
+    - name: "hallway"
+      waypoints:
+        - {x: 4.0, y: 5.0}
+      dwell_seconds: 2
+
+    - name: "bedroom_1"
+      waypoints:
+        - {x: 1.0, y: 7.0}
+        - {x: 3.0, y: 7.0}
+      dwell_seconds: 3
+
+    - name: "bedroom_2"
+      waypoints:
+        - {x: 6.0, y: 7.0}
+      dwell_seconds: 3

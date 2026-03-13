@@ -1,0 +1,8 @@
+# Speech-to-text transcription action
+float32 timeout_seconds     # Max recording time (default 10.0)
+---
+string transcript           # Recognized text
+float32 confidence          # ASR confidence
+float32 duration_seconds    # Audio duration processed
+---
+string partial_transcript   # Partial result during recognition

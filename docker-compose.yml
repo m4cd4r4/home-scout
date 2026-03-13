@@ -1,0 +1,25 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    container_name: home-scout-dev
+    volumes:
+      - .:/home/scout/home-scout
+    stdin_open: true
+    tty: true
+    command: bash
+
+  sim:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.sim
+    container_name: home-scout-sim
+    environment:
+      - DISPLAY=${DISPLAY:-}
+      - GAZEBO_MASTER_URI=http://localhost:11345
+    volumes:
+      - .:/home/scout/home-scout
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    stdin_open: true
+    tty: true

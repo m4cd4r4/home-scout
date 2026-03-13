@@ -1,0 +1,7 @@
+# Start a patrol run
+string[] rooms              # Rooms to patrol (empty = all rooms)
+float32 speed               # Max speed m/s (capped at 0.3)
+bool detect_objects         # Run VLM during patrol
+---
+bool accepted               # Whether patrol was accepted
+string message              # Status message

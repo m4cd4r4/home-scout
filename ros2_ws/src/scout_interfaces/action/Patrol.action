@@ -1,0 +1,13 @@
+# Long-running patrol action
+string[] rooms              # Rooms to patrol
+float32 speed               # Max speed m/s
+bool detect_objects         # Run VLM during patrol
+---
+uint32 rooms_visited
+uint32 objects_found
+float32 duration_seconds
+---
+string current_room
+uint32 rooms_completed
+uint32 objects_found_so_far
+float32 battery_percent

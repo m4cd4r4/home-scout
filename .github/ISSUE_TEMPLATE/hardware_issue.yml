@@ -1,0 +1,49 @@
+name: Hardware Issue
+description: Report a hardware design problem (fit, wiring, structural)
+labels: ["type: hardware", "status: needs triage"]
+body:
+  - type: input
+    id: chassis
+    attributes:
+      label: Chassis version
+      placeholder: "v1-starter / community-xyz"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Issue type
+      options:
+        - Fit / tolerance
+        - Wiring
+        - Mounting
+        - Structural
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the issue. Include photos if possible.
+    validations:
+      required: true
+
+  - type: textarea
+    id: printer
+    attributes:
+      label: Printer and settings
+      placeholder: |
+        Printer: Ender 3 V2
+        Material: PETG
+        Layer height: 0.2mm
+        Infill: 20%
+        Supports: yes/no
+
+  - type: textarea
+    id: measurements
+    attributes:
+      label: Measurements
+      description: Include dimensions if this is a tolerance issue

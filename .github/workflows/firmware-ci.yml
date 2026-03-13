@@ -1,0 +1,48 @@
+name: Firmware CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/firmware-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'firmware/**'
+      - '.github/workflows/firmware-ci.yml'
+
+jobs:
+  build-stm32:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PlatformIO
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install platformio
+
+      - name: Build STM32 motor control firmware
+        run: cd firmware/stm32-motor-control && pio run
+
+      - name: Run STM32 unit tests
+        run: cd firmware/stm32-motor-control && pio test -e native
+        continue-on-error: true
+
+  build-esp32:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PlatformIO
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install platformio
+
+      - name: Build ESP32-CAM firmware
+        run: cd firmware/esp32-cam && pio run

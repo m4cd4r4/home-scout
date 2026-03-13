@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# ROS 2 build artifacts
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# PlatformIO build artifacts
+firmware/*/.pio/
+firmware/*/lib/
+firmware/*/.vscode/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Models (too large for git, downloaded via script)
+models/
+*.onnx
+*.pt
+*.bin
+!firmware/**/*.bin
+
+# Data
+data/
+*.db
+*.db-journal
+
+# Logs
+*.log
+log/
+
+# Environment
+.env
+.env.local
+
+# Documentation build
+docs/site/
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/

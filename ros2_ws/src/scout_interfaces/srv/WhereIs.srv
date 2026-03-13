@@ -1,0 +1,9 @@
+# Query: "Where is <object>?"
+string object_name          # What to find (e.g., "keys", "my phone")
+---
+bool found                  # Whether any sighting exists
+string room                 # Last known room
+string zone                 # Last known zone within room
+string description          # Human-readable response
+builtin_interfaces/Time last_seen  # When it was last observed
+float32 confidence          # Confidence in the sighting (decays over time)

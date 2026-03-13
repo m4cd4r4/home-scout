@@ -1,0 +1,91 @@
+name: Bug Report
+description: Report a bug in Scout's software or firmware
+labels: ["type: bug", "status: needs triage"]
+body:
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase affected
+      options:
+        - Phase 1 - Voice
+        - Phase 2 - Vision
+        - Phase 3 - Mobility
+        - Phase 4 - Memory
+        - Phase 5 - Faces
+        - Phase 6 - Drone
+        - Not phase-specific
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - voice (ASR/TTS/wake word)
+        - vision (cameras/detection)
+        - nav (SLAM/patrol/motors)
+        - memory (object database/queries)
+        - faces (enrollment/recognition)
+        - firmware-stm32 (motor control)
+        - firmware-esp32 (fixed cameras)
+        - simulation (Gazebo)
+        - docs
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this?
+      placeholder: |
+        1. Launch Scout with...
+        2. Say "Hey Scout..."
+        3. Observe...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual behavior
+      placeholder: |
+        Expected: Scout responds with object location
+        Actual: Scout says "I haven't seen that" even though I just placed it
+
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware setup
+      placeholder: |
+        VENTUNO Q revision: ...
+        Chassis: v1-starter / custom
+        Cameras: IMX219 + IMX477
+        Peripherals: RPLIDAR C1, BNO055
+
+  - type: textarea
+    id: software
+    attributes:
+      label: Software versions
+      placeholder: |
+        Ubuntu: 24.04
+        ROS 2: Jazzy
+        scout_voice: 0.1.0
+        Python: 3.12
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Paste relevant log output
+      render: shell

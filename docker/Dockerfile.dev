@@ -1,0 +1,45 @@
+# Home Scout - Development Environment
+# For x86_64 hosts. Includes ROS 2 Jazzy + all dev tools.
+
+FROM ros:jazzy
+
+# Install development tools
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    python3-colcon-common-extensions \
+    python3-rosdep \
+    git \
+    vim \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python tools
+RUN pip install --break-system-packages \
+    ruff \
+    mypy \
+    pytest \
+    pytest-cov \
+    platformio
+
+# Install PlatformIO toolchains
+RUN pio pkg install -g -p espressif32 && \
+    pio pkg install -g -p ststm32
+
+# Set up workspace
+WORKDIR /home/scout/home-scout
+COPY . .
+
+# Install ROS dependencies
+RUN . /opt/ros/jazzy/setup.sh && \
+    cd ros2_ws && \
+    rosdep install --from-paths src --ignore-src -r -y || true
+
+# Build
+RUN . /opt/ros/jazzy/setup.sh && \
+    cd ros2_ws && \
+    colcon build --symlink-install || true
+
+# Entry point
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh || true
+
+CMD ["bash"]

@@ -1,0 +1,49 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+labels: ["type: feature"]
+body:
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options:
+        - Phase 1 - Voice
+        - Phase 2 - Vision
+        - Phase 3 - Mobility
+        - Phase 4 - Memory
+        - Phase 5 - Faces
+        - Phase 6 - Drone
+        - New phase / cross-cutting
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What problem does this solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How should this work?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you think about?
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Would you help build this?
+      options:
+        - label: I would implement this
+        - label: I can test this
+        - label: I can review the PR

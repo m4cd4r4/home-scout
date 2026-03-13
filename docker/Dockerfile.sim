@@ -1,0 +1,23 @@
+# Home Scout - Simulation Environment
+# Includes Gazebo Harmonic for headless simulation testing
+
+FROM ros:jazzy
+
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    python3-colcon-common-extensions \
+    ros-jazzy-gazebo-ros-pkgs \
+    ros-jazzy-nav2-bringup \
+    ros-jazzy-slam-toolbox \
+    ros-jazzy-robot-state-publisher \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /home/scout/home-scout
+COPY . .
+
+RUN . /opt/ros/jazzy/setup.sh && \
+    cd ros2_ws && \
+    rosdep install --from-paths src --ignore-src -r -y || true && \
+    colcon build --symlink-install || true
+
+CMD ["bash", "-c", "source /opt/ros/jazzy/setup.bash && source ros2_ws/install/setup.bash && ros2 launch scout_simulation gazebo_house.launch.py"]

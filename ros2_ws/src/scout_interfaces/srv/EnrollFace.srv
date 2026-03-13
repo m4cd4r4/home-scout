@@ -1,0 +1,7 @@
+# Enroll a new face for recognition
+string person_name          # Name to associate with this face
+bool consent_given          # Must be true to proceed
+---
+bool success
+string message              # "Enrolled successfully" or error reason
+uint32 num_samples          # Number of face samples captured

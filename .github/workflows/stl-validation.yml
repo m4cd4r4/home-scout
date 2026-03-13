@@ -1,0 +1,46 @@
+name: STL Validation
+
+on:
+  push:
+    paths:
+      - '**.stl'
+  pull_request:
+    paths:
+      - '**.stl'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Install admesh
+        run: sudo apt-get update && sudo apt-get install -y admesh
+
+      - name: Validate STL files
+        run: |
+          ERRORS=0
+          for stl in $(find . -name "*.stl" -type f); do
+            echo "Checking: $stl"
+            admesh --no-write "$stl" 2>&1 | tee /tmp/admesh_out.txt
+
+            if grep -q "degenerate" /tmp/admesh_out.txt; then
+              echo "WARNING: $stl has degenerate facets"
+              ERRORS=$((ERRORS + 1))
+            fi
+
+            SIZE=$(stat -c%s "$stl")
+            if [ "$SIZE" -gt 52428800 ]; then
+              echo "WARNING: $stl exceeds 50MB ($SIZE bytes)"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "$ERRORS issues found"
+            exit 1
+          fi
+          echo "All STL files valid"
+        shell: bash

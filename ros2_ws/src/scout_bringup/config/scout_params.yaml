@@ -1,0 +1,40 @@
+# Home Scout default parameters
+scout:
+  ros__parameters:
+    # General
+    robot_name: "Scout"
+    log_level: "info"
+
+    # Voice
+    wake_phrase: "hey scout"
+    asr_model: "whisper-small-en"
+    tts_voice: "en_US-amy-medium"
+    tts_speed: 1.0
+    conversation_timeout: 30.0  # seconds of silence before ending conversation
+
+    # Vision
+    detection_model: "smolvlm-256m"
+    detection_confidence_threshold: 0.5
+    detection_rate_hz: 2.0  # VLM inference rate during patrol
+    face_detection_rate_hz: 5.0
+
+    # Navigation
+    max_speed: 0.3  # m/s (hard limit)
+    patrol_speed: 0.2  # m/s (default patrol speed)
+    obstacle_stop_distance: 0.3  # meters
+    cliff_threshold: 100  # ADC value below this = cliff detected
+
+    # Memory
+    db_path: "/home/scout/data/scout_memory.db"
+    retention_personal_days: 30
+    retention_household_days: 14
+    retention_transient_days: 2
+    confidence_decay_rate: 0.1  # per hour
+
+    # Face recognition
+    face_match_threshold: 0.6  # cosine similarity
+    face_db_path: "/home/scout/data/faces.db"
+
+    # Network
+    wifi_ap_ssid: "ScoutNet"
+    wifi_ap_subnet: "10.0.77.0/24"
