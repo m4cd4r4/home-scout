@@ -6,8 +6,8 @@ Welcome to the Home Scout documentation. Scout is a privacy-first home companion
 
 - [Build Guide Overview](build-guides/overview.md) - Start here
 - [Architecture](ARCHITECTURE.md) - How Scout works
-- [BOM](https://github.com/YOUR_USERNAME/home-scout/blob/main/BOM.md) - What to buy
-- [FAQ](https://github.com/YOUR_USERNAME/home-scout/blob/main/FAQ.md) - Common questions
+- [BOM](https://github.com/m4cd4r4/home-scout/blob/main/BOM.md) - What to buy
+- [FAQ](https://github.com/m4cd4r4/home-scout/blob/main/FAQ.md) - Common questions
 
 ## Build Phases
 
@@ -22,4 +22,4 @@ Welcome to the Home Scout documentation. Scout is a privacy-first home companion
 
 ## Privacy
 
-All processing happens on-device. Scout never connects to the internet. See [PRIVACY.md](https://github.com/YOUR_USERNAME/home-scout/blob/main/PRIVACY.md).
+All processing happens on-device. Scout never connects to the internet. See [PRIVACY.md](https://github.com/m4cd4r4/home-scout/blob/main/PRIVACY.md).

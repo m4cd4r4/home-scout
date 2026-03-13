@@ -2,8 +2,8 @@
 
 ## Before You Start
 
-1. **Read [SAFETY.md](https://github.com/YOUR_USERNAME/home-scout/blob/main/SAFETY.md)** before building anything
-2. **Buy parts for one phase at a time** - see [BOM.md](https://github.com/YOUR_USERNAME/home-scout/blob/main/BOM.md)
+1. **Read [SAFETY.md](https://github.com/m4cd4r4/home-scout/blob/main/SAFETY.md)** before building anything
+2. **Buy parts for one phase at a time** - see [BOM.md](https://github.com/m4cd4r4/home-scout/blob/main/BOM.md)
 3. **Each phase is standalone** - you can stop after any phase and have a working robot
 
 ## Tools Required
@@ -31,6 +31,6 @@ Build in order. Each phase builds on the previous one.
 
 ## Getting Help
 
-- [GitHub Discussions](https://github.com/YOUR_USERNAME/home-scout/discussions) - ask questions
+- [GitHub Discussions](https://github.com/m4cd4r4/home-scout/discussions) - ask questions
 - [Troubleshooting](troubleshooting.md) - common problems
-- [Build Help issue template](https://github.com/YOUR_USERNAME/home-scout/issues/new?template=build_help.yml) - stuck on a step
+- [Build Help issue template](https://github.com/m4cd4r4/home-scout/issues/new?template=build_help.yml) - stuck on a step

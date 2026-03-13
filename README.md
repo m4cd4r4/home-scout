@@ -1,355 +1,279 @@
 <p align="center">
-  <img src="media/hero-banner.png" alt="Home Scout - Privacy-First Home Companion Robot" width="700">
+  <img src="media/scout-hero.png" alt="Scout - Privacy-First Home Companion Robot" width="400">
 </p>
 
 <h1 align="center">Home Scout</h1>
 
 <p align="center">
-  <strong>A privacy-first home companion robot that remembers where you left things.</strong>
+  <strong>A privacy-first home companion robot you build with your family.</strong><br>
+  Voice assistant. Object memory. Face recognition. Zero internet. All local.
 </p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
-  <a href="https://github.com/YOUR_USERNAME/home-scout/actions/workflows/ros2-ci.yml"><img src="https://github.com/YOUR_USERNAME/home-scout/actions/workflows/ros2-ci.yml/badge.svg" alt="ROS 2 CI"></a>
-  <a href="https://github.com/YOUR_USERNAME/home-scout/actions/workflows/firmware-ci.yml"><img src="https://github.com/YOUR_USERNAME/home-scout/actions/workflows/firmware-ci.yml/badge.svg" alt="Firmware CI"></a>
-  <a href="https://github.com/YOUR_USERNAME/home-scout/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
+  <a href="https://github.com/m4cd4r4/home-scout/actions/workflows/ros2-ci.yml"><img src="https://github.com/m4cd4r4/home-scout/actions/workflows/ros2-ci.yml/badge.svg" alt="ROS 2 CI"></a>
+  <a href="https://github.com/m4cd4r4/home-scout/actions/workflows/firmware-ci.yml"><img src="https://github.com/m4cd4r4/home-scout/actions/workflows/firmware-ci.yml/badge.svg" alt="Firmware CI"></a>
+  <a href="https://github.com/m4cd4r4/home-scout/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
 </p>
 
 <p align="center">
   <a href="#what-is-scout">What is Scout?</a> &bull;
-  <a href="#features">Features</a> &bull;
   <a href="#build-phases">Build Phases</a> &bull;
   <a href="#quick-start">Quick Start</a> &bull;
   <a href="#privacy">Privacy</a> &bull;
-  <a href="#hardware-overview">Hardware</a> &bull;
   <a href="#architecture">Architecture</a> &bull;
-  <a href="#contributing">Contributing</a> &bull;
-  <a href="#safety">Safety</a>
+  <a href="#contributing">Contributing</a>
 </p>
 
 ---
 
 ## What is Scout?
 
-Scout is an open-source home companion robot you build with your family. It patrols your house, remembers where objects are, greets family members by name, and answers questions - all without ever connecting to the internet. Ask "Scout, where are my keys?" and it tells you exactly where it last saw them.
+Scout is an open-source home companion robot you build with your family. It patrols your house, remembers where objects are, greets family members by name, and answers questions - all without ever connecting to the internet.
 
-The brain is an [Arduino VENTUNO Q](https://www.arduino.cc/) board running ROS 2 on Ubuntu. It pairs an Arm Cortex-A78AE (Jetson Orin NX) for AI workloads with an STM32H5 microcontroller for real-time motor and sensor control. One board handles voice recognition, object detection, navigation, and face recognition locally.
+> "Scout, where are my keys?"
+> *"I last saw your keys on the kitchen counter about 2 hours ago."*
 
-Privacy is not a feature - it is the architecture. Scout has no Wi-Fi antenna, no cloud account, no telemetry. Every byte of data stays on the robot. Face embeddings are encrypted at rest. You can audit the entire system with a single script. Families deserve a robot that watches the house without reporting to a corporation.
+The brain is an [Arduino VENTUNO Q](https://www.arduino.cc/) - a dual-processor board pairing a Qualcomm Dragonwing IQ-8275 (40 TOPS NPU, 16GB RAM) with an STM32H5 real-time controller. One board handles voice recognition, object detection, navigation, and face recognition. All locally.
 
-## Features
-
-| Feature | How It Works | Phase |
-|---------|-------------|-------|
-| Voice interaction | Wake word detection + on-device speech-to-text and text-to-speech via Whisper + Piper | Phase 1 |
-| Object detection | YOLOv8-nano running on Jetson Orin NX GPU at 30 FPS | Phase 2 |
-| Autonomous navigation | SLAM mapping with RPLIDAR + IMU, path planning via Nav2 | Phase 3 |
-| Object memory | Spatial database linking detected objects to map coordinates with timestamps | Phase 4 |
-| Face recognition | On-device face embeddings (ArcFace), encrypted storage, family-only training | Phase 5 |
-| Drone module | Tethered or autonomous indoor drone for elevated search and monitoring | Phase 6 |
-| Customizable personality | Adjustable voice, response style, LED expressions, OLED face animations | All |
-| 100% local processing | Zero internet. Zero cloud. Zero telemetry. Everything runs on-board. | All |
+Privacy is not a feature - it is the architecture. Scout has no Wi-Fi antenna pointed at the internet, no cloud account, no telemetry. Every byte of data stays on the robot. Face embeddings are encrypted at rest. Audio is never saved. You can audit the entire system with a single script.
 
 ## Build Phases
 
-Scout is designed to be built incrementally. Start with Phase 1 and add capabilities over time. Each phase produces a working robot.
+Scout is designed to be built incrementally. Each phase produces a working robot. Start with Phase 1 and add capabilities over time.
 
----
+### Phase 1: Scout Can Talk (~$362)
 
-### Phase 1: Scout Can Talk
-
-> Voice interface - wake word, speech-to-text, text-to-speech, basic Q&A.
-
-| | |
-|---|---|
-| **What you need** | VENTUNO Q board, NVMe SSD, 2x MEMS microphones, I2S amplifier, speaker |
-| **Cost** | ~$300 |
-| **Build time** | One afternoon |
+> Microphone, speaker, and a local LLM. One afternoon to build.
 
 <details>
-<summary><strong>What can Scout do after this phase?</strong></summary>
+<summary>What can Scout do?</summary>
 
 - Responds to "Hey Scout" wake word
-- Answers general questions using a local LLM (Llama 3.2 1B or similar)
-- Tells jokes, sets timers, reads recipes aloud
-- Speaks with a configurable voice (male/female, speed, pitch)
-- Runs entirely from a desk or shelf - no mobility required
+- Answers questions using Llama 3.2 1B running on the NPU
+- Tells jokes, sets timers, reads recipes
+- Configurable voice and personality
+- Runs from a desk or shelf - no wheels needed
 
 </details>
 
----
+### Phase 2: Scout Can See (+$64)
 
-### Phase 2: Scout Can See
-
-> Object detection - identifies and classifies common household objects in real time.
-
-| | |
-|---|---|
-| **What you need** | Onboard MIPI-CSI camera, optional wide-angle or HQ camera, ESP32-S3 room cameras |
-| **Cost** | ~$30-50 extra |
-| **Build time** | One evening |
+> Add a camera. Scout detects and identifies household objects.
 
 <details>
-<summary><strong>What can Scout do after this phase?</strong></summary>
+<summary>What can Scout do?</summary>
 
-- Detects 80+ object categories (COCO dataset) at 30 FPS
+- Detects objects via SmolVLM-256M on the NPU at 2 Hz
 - "Scout, what do you see?" - describes objects in view
-- Room cameras provide persistent monitoring from fixed positions
-- Combines with Phase 1 voice: "Scout, is my laptop on the desk?"
-- Still stationary - but now it has eyes
+- Multi-object tracking with stable IDs across frames
+- Optional ESP32-S3-CAMs for fixed room monitoring
 
 </details>
 
----
+### Phase 3: Scout Can Move (+$569)
 
-### Phase 3: Scout Can Move
-
-> Wheels, motors, LIDAR, and autonomous navigation via SLAM.
-
-| | |
-|---|---|
-| **What you need** | 4WD chassis, motors, encoders, LIDAR, IMU, battery, motor drivers, bump/cliff sensors |
-| **Cost** | ~$250-300 extra |
-| **Build time** | One weekend |
+> Wheels, motors, LIDAR, and autonomous navigation.
 
 <details>
-<summary><strong>What can Scout do after this phase?</strong></summary>
+<summary>What can Scout do?</summary>
 
-- Maps your house autonomously using SLAM
-- Navigates between rooms avoiding obstacles
-- Runs patrol routes on a schedule or on command
-- Returns to charging position when battery is low
-- Emergency stop button kills all motor power instantly
-- Cliff sensors prevent it from falling down stairs
+- Maps your house using RTAB-Map SLAM
+- Navigates between rooms via Nav2
+- Runs patrol routes on a schedule
+- 4-layer obstacle avoidance (LIDAR + ToF + cliff + bump)
+- Hardware e-stop button kills all motor power instantly
+- STM32H5 watchdog stops motors if Linux crashes
 
 </details>
 
----
+### Phase 4: Scout Remembers (+$0)
 
-### Phase 4: Scout Remembers Everything
-
-> Spatial object memory - links detected objects to map locations with timestamps.
-
-| | |
-|---|---|
-| **What you need** | No new hardware - software-only upgrade |
-| **Cost** | $0 extra |
-| **Build time** | A few hours |
+> Software-only. Scout remembers where it saw household objects.
 
 <details>
-<summary><strong>What can Scout do after this phase?</strong></summary>
+<summary>What can Scout do?</summary>
 
-- "Scout, where are my keys?" - "I last saw your keys on the kitchen counter 2 hours ago."
-- Maintains a spatial database of every detected object and its location
-- Tracks object movement over time
-- Searches specific rooms on request: "Scout, go check if my bag is in the bedroom."
-- Combines patrol routes with object scanning for continuous inventory
+- "Scout, where are my keys?" - tells you the room, zone, and when
+- SQLite + FTS5 spatial database with confidence decay
+- Portable items decay fast (4h half-life), furniture decays slow (1 week)
+- Natural language aliases: "my phone" maps to "phone"
+- Configurable retention (default 30 days)
 
 </details>
 
----
+### Phase 5: Scout Knows Us (+$0)
 
-### Phase 5: Scout Knows Us
-
-> Face recognition - identifies family members and personalizes interactions.
-
-| | |
-|---|---|
-| **What you need** | No new hardware - software-only upgrade using existing cameras |
-| **Cost** | $0 extra |
-| **Build time** | ~5 minutes per family member (enrollment) |
+> Software-only. Face recognition with encrypted embeddings.
 
 <details>
-<summary><strong>What can Scout do after this phase?</strong></summary>
+<summary>What can Scout do?</summary>
 
-- "Good morning, Sarah!" - greets family members by name
-- Personalizes responses per person (reminders, preferences, voice style)
-- Announces arrivals: "Dad just got home."
-- Face embeddings are encrypted and never leave the device
-- Enrollment is local - stand in front of Scout for 5 seconds
-- Guest mode for visitors (no face stored)
+- "Good morning, Sarah!" - greets family by name
+- Time-of-day aware greetings with per-person cooldown
+- Consent-required enrollment (5 seconds in front of camera)
+- 128-d face embeddings encrypted at rest (AES-256-GCM)
+- No face images ever saved
 
 </details>
 
----
+### Phase 6: Sky Eye (+$133, optional)
 
-### Phase 6: Scout's Sky Eye
-
-> Drone module - tethered or autonomous indoor aerial unit for elevated search.
-
-| | |
-|---|---|
-| **What you need** | Micro drone frame, brushless motors, flight controller, FPV camera, tether (optional) |
-| **Cost** | ~$150-200 extra |
-| **Build time** | Multiple weekends |
+> Indoor micro drone companion for elevated views.
 
 <details>
-<summary><strong>What can Scout do after this phase?</strong></summary>
+<summary>What can Scout do?</summary>
 
-- Launches a small indoor drone for elevated search
+- Small indoor drone streams video back to Scout for VLM inference
 - Checks high shelves, tops of cabinets, above furniture
-- Tethered mode keeps the drone physically connected (safer, unlimited flight time)
-- Autonomous mode with indoor GPS-denied navigation
-- "Scout, check the top of the bookshelf" triggers a targeted flyover
-- This is an advanced build - expect iteration and debugging
+- Prop guards required, strict flight boundaries
+- This phase is a design outline - contributions welcome
 
 </details>
+
+---
+
+**Total cost across all phases: ~$1,128** (or ~$362 for voice-only Phase 1)
 
 ## Quick Start
 
-Two paths: simulation (no hardware needed) or real hardware starting at Phase 1.
-
-### Path A: Simulation (Docker)
-
-Run the full Scout stack in simulation. Requires Docker and 8 GB+ RAM.
+### Simulation (no hardware)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/home-scout.git
+git clone https://github.com/m4cd4r4/home-scout.git
 cd home-scout
-
-# Pull and start all containers (ROS 2, Gazebo sim, voice pipeline)
-docker compose -f docker/docker-compose.sim.yml up
-
-# In another terminal - talk to simulated Scout
-docker exec -it scout-voice bash
-ros2 topic pub /scout/wake_word std_msgs/msg/String "data: 'hey scout'"
+docker compose up sim
 ```
 
-Open `http://localhost:8080` in your browser to see the Gazebo simulation with Scout navigating a virtual house.
-
-### Path B: Real Hardware (Phase 1)
-
-Grab the parts listed in [Phase 1 of the BOM](BOM.md#phase-1-scout-can-talk) and follow the hardware guide.
+### Real Hardware (Phase 1)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/home-scout.git
+git clone https://github.com/m4cd4r4/home-scout.git
 cd home-scout
+./scripts/setup-ventuno.sh
 
-# Flash the STM32H5 firmware
-cd firmware
-./flash.sh
-
-# Install ROS 2 workspace on the VENTUNO Q (Ubuntu 24.04)
-cd ../ros2_ws
-colcon build --packages-select scout_voice scout_core
-source install/setup.bash
-
-# Launch the voice pipeline
-ros2 launch scout_voice voice_pipeline.launch.py
+source /opt/ros/jazzy/setup.bash
+source ros2_ws/install/setup.bash
+ros2 launch scout_bringup scout_voice_only.launch.py
 ```
 
-Say "Hey Scout" and ask a question. See [docs/phase1-build-guide.md](docs/phase1-build-guide.md) for the full walkthrough with photos.
+Say **"Hey Scout"** and ask a question. See the [Phase 1 Build Guide](docs/build-guides/phase-1-voice.md) for the full walkthrough.
 
 ## Privacy
 
-Scout is designed from the ground up to protect your family's privacy.
-
-- **Zero internet connectivity.** Scout has no Wi-Fi antenna and no cellular modem. It cannot connect to the internet even if you wanted it to.
-- **Zero cloud dependency.** All AI models (speech, vision, LLM, face recognition) run locally on the VENTUNO Q's Jetson Orin NX GPU.
-- **Zero telemetry.** No analytics, no crash reports, no usage data leaves the robot. Ever.
-- **Encrypted face data.** Face embeddings are encrypted at rest using AES-256. Deleting a family member's profile permanently destroys their biometric data.
-- **Auditable by design.** Run `scripts/verify-privacy.sh` to confirm no network interfaces are active, no outbound connections exist, and all data stays on-device.
-- **Open source, always.** Every line of code is in this repo. No proprietary blobs, no phone-home binaries, no hidden services.
-
-## Hardware Overview
-
-See [BOM.md](BOM.md) for the full bill of materials with purchase links and per-phase breakdowns.
-
-| Category | Key Components | Approx. Cost |
-|----------|---------------|-------------|
-| Compute | Arduino VENTUNO Q (Jetson Orin NX + STM32H5) | ~$300 |
-| Storage | Samsung 970 EVO Plus 250GB NVMe | ~$40 |
-| Audio | 2x INMP441 mics, MAX98357A amp, speaker | ~$17 |
-| Vision | Arducam IMX219/IMX477 onboard + 4x ESP32-S3 room cams | ~$75-135 |
-| Mobility | 4WD chassis, Pololu motors, wheels, motor drivers | ~$200 |
-| Navigation | RPLIDAR C1, BNO055 IMU, ToF sensors, cliff sensors | ~$190 |
-| Power | 4S LiPo battery, BMS, buck converter | ~$100 |
-| Interface | 2x OLED displays, NeoPixel ring, e-stop | ~$40 |
-| Misc | Wiring, connectors, fasteners, bumpers | ~$70 |
-| **Total (all phases)** | | **~$1,030-1,100** |
+| Principle | Implementation |
+|-----------|---------------|
+| No internet | Scout creates its own WiFi AP (ScoutNet). No default gateway. No DNS. |
+| All AI local | Whisper, Piper TTS, Llama 3.2 1B, SmolVLM, ArcFace - all on the 40 TOPS NPU |
+| No telemetry | Zero analytics, zero crash reports, zero usage data |
+| Encrypted faces | 128-d embeddings encrypted with AES-256-GCM. Key from user passphrase via Argon2id |
+| Audio not saved | Processed in circular buffer, discarded after transcription |
+| Hardware mic mute | Physical slide switch disconnects I2S clock line |
+| Camera LED | Wired to camera power. If the LED is off, the camera is off. Hardware guarantee. |
+| Auditable | `scripts/verify-privacy.sh` checks network isolation, DNS, traffic, listening services |
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                      ARDUINO VENTUNO Q                              │
-│                                                                     │
-│  ┌───────────────────────────────────────────────────────────────┐  │
-│  │              Jetson Orin NX  (Cortex-A78AE)                  │  │
-│  │                    Ubuntu 24.04 + ROS 2 Jazzy                │  │
-│  │                                                               │  │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────────┐  │  │
-│  │  │  Voice   │ │  Vision  │ │   Nav2   │ │ Object Memory  │  │  │
-│  │  │ Pipeline │ │ Pipeline │ │  Stack   │ │   (SQLite)     │  │  │
-│  │  │          │ │          │ │          │ │                │  │  │
-│  │  │ Whisper  │ │ YOLOv8n  │ │  SLAM    │ │ Spatial index  │  │  │
-│  │  │ Piper    │ │ ArcFace  │ │  AMCL    │ │ Timestamps     │  │  │
-│  │  │ LLM      │ │ Tracker  │ │  Planner │ │ Confidence     │  │  │
-│  │  └────┬─────┘ └────┬─────┘ └────┬─────┘ └───────┬────────┘  │  │
-│  │       │             │            │               │            │  │
-│  │       └─────────────┴─────┬──────┴───────────────┘            │  │
-│  │                           │                                    │  │
-│  │                    ROS 2 Topic Bus                             │  │
-│  │                           │                                    │  │
-│  └───────────────────────────┼───────────────────────────────────┘  │
-│                              │                                      │
-│                         CAN-FD Bus                                  │
-│                              │                                      │
-│  ┌───────────────────────────┼───────────────────────────────────┐  │
-│  │              STM32H5  (Real-Time Controller)                  │  │
-│  │                                                               │  │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │  │
-│  │  │  Motor   │ │  Sensor  │ │  Power   │ │  Safety  │       │  │
-│  │  │  Control │ │  Fusion  │ │  Mgmt    │ │  Monitor │       │  │
-│  │  │ 4x PWM   │ │ IMU+Enc  │ │ BMS+Buck │ │ E-Stop   │       │  │
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘       │  │
-│  └───────────────────────────────────────────────────────────────┘  │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
-         │              │              │              │
-    ┌────┴────┐   ┌────┴────┐   ┌────┴────┐   ┌────┴────┐
-    │ RPLIDAR │   │ Cameras │   │ Motors  │   │ Sensors │
-    │   C1    │   │ CSI+ESP │   │ 4x 37D  │   │ ToF/IMU │
-    └─────────┘   └─────────┘   └─────────┘   └─────────┘
++----------------------------------------------------------+
+|              VENTUNO Q  (Ubuntu 24.04 + ROS 2 Jazzy)     |
+|                                                          |
+|  +----------+  +----------+  +---------+  +------------+ |
+|  |  voice   |  |  vision  |  |   nav   |  |   memory   | |
+|  | Phase 1  |  | Phase 2  |  | Phase 3 |  |  Phase 4   | |
+|  +----------+  +----------+  +---------+  +------------+ |
+|  +----------+  +--------------------------------------+  |
+|  |  faces   |  |         hardware_bridge              |  |
+|  | Phase 5  |  +------------------+-------------------+  |
+|  +----------+                     | CAN-FD                |
++-----------------------------------+----------------------+
+|              STM32H5  (Zephyr RTOS)                      |
+|   Motor PWM | Encoders | PID | Safety Watchdog           |
++----------------------------------------------------------+
+```
+
+### AI Models (all local, 40 TOPS NPU)
+
+| Model | Purpose | Size |
+|-------|---------|------|
+| openWakeWord | "Hey Scout" detection | 2 MB |
+| Whisper-Small-En | Speech recognition | 500 MB |
+| Piper TTS (amy) | Speech synthesis | 100 MB |
+| Llama-3.2-1B-Instruct | Conversation | 1.5 GB |
+| SmolVLM-256M | Object detection (VLM) | 1.5 GB |
+| SCRFD-2.5G | Face detection | 10 MB |
+| MobileFaceNet | Face embedding | 10 MB |
+
+Total: ~3.6 GB disk, ~5.4 GB RAM. Leaves 10.6 GB free on the 16 GB board.
+
+See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for full system design, NPU scheduling, object memory schema, and network topology.
+
+## Hardware
+
+| Part | Model | Cost |
+|------|-------|------|
+| Main board | Arduino VENTUNO Q | ~$300 |
+| Storage | Samsung 970 EVO Plus 250GB NVMe | ~$40 |
+| Audio | 2x INMP441 mics + MAX98357A amp + speaker | ~$17 |
+| Camera | Arducam IMX477 HQ MIPI-CSI | ~$60 |
+| Motors | 4x Pololu 37D 50:1 with encoders | ~$100 |
+| Chassis | 3D printed or off-the-shelf 4WD kit | ~$35 |
+| LIDAR | SLAMTEC RPLIDAR C1 | ~$100 |
+| Sensors | BNO055 IMU + 4x VL53L1X ToF + 2x TCRT5000 cliff | ~$90 |
+| Power | 4S LiPo + BMS + buck converter | ~$97 |
+| Connectors | JST-XH, cables, standoffs, fuse | ~$70 |
+
+Full BOM with 3 price tiers and alternatives: [BOM.md](BOM.md)
+
+## Repository Structure
+
+```
+home-scout/
+  ros2_ws/src/          # 8 ROS 2 packages (voice, vision, nav, memory, faces, ...)
+  firmware/             # STM32H5 motor control + ESP32-CAM streaming
+  hardware/             # 3D printable chassis, wiring schematics, mounts
+  config/               # Personalities, patrol routes, room maps
+  docs/                 # Build guides (6 phases), reference, design docs
+  training/             # Wake word, object detection, face recognition guides
+  tests/                # Unit, integration, simulation, hardware tests
+  scripts/              # Setup, model download, privacy verification
+  docker/               # Dev and simulation environments
 ```
 
 ## Contributing
 
-Scout is a community project. Contributions of all kinds are welcome - code, docs, hardware designs, 3D models, testing, and translations.
+Contributions of all kinds are welcome - code, docs, hardware designs, 3D models, testing.
 
 ```bash
-# One-command dev setup (simulation, no hardware needed)
-git clone https://github.com/YOUR_USERNAME/home-scout.git
+git clone https://github.com/m4cd4r4/home-scout.git
 cd home-scout
-docker compose -f docker/docker-compose.dev.yml up
+docker compose up dev
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, PR process, and architecture decisions.
+### No hardware? No problem.
 
-### Ways to Contribute Without Hardware
+- Write tests using the Gazebo simulation
+- Improve documentation and build guides
+- Design 3D-printable chassis variants
+- Optimize AI models for edge deployment
+- Add language support (wake words + TTS voices)
+- Review code for security and privacy
 
-- **Write tests** for ROS 2 nodes using the simulation environment
-- **Improve documentation** - build guides, wiring diagrams, troubleshooting
-- **Train or optimize models** - smaller, faster YOLOv8 variants for edge deployment
-- **Design 3D-printable parts** - chassis, camera mounts, sensor brackets
-- **Add language support** - wake word models and TTS voices for more languages
-- **Review and audit** - security review, privacy audit, code quality
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide.
 
 ## Safety
 
 Read [SAFETY.md](SAFETY.md) before building. Key points:
 
-- **Emergency stop is mandatory for Phase 3+.** The e-stop button cuts all motor power immediately. Do not skip this.
-- **Battery handling requires adult supervision.** LiPo batteries can be dangerous if mishandled. Always charge with a proper balance charger. Never leave charging unattended.
-- **Phase 6 (drone module) is adults-only.** Indoor drones require careful tuning and understanding of propeller safety. Not suitable for children to build or operate unsupervised.
-- **Secure the robot when not in use.** A 5 kg robot moving at 0.5 m/s can knock things over. Use the software speed limiter and keep the e-stop accessible.
-- **Test in an open area first.** Before letting Scout patrol your house, test navigation in a single room with obstacles removed.
+- E-stop is mandatory for Phase 3+. Cuts all motor power instantly.
+- LiPo battery handling requires adult supervision. Never charge unattended.
+- Phase 6 (drone) is adults-only. Indoor drones require careful tuning.
+- Max speed software-limited to 0.3 m/s (enforced independently by STM32H5).
+- STM32H5 watchdog: if Linux crashes, motors stop within 100ms.
 
 ## License
 
-MIT License. See [LICENSE](LICENSE).
-
-Build it. Modify it. Share it. Teach your kids how robots work.
+[MIT](LICENSE). Build it. Modify it. Share it. Teach your kids how robots work.
 
 ---
 

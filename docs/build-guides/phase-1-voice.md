@@ -38,7 +38,7 @@ sudo rosdep init && rosdep update
 ## Step 3: Clone and Build Home Scout
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/home-scout.git
+git clone https://github.com/m4cd4r4/home-scout.git
 cd home-scout
 ./scripts/setup-ventuno.sh
 ```

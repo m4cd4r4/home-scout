@@ -432,7 +432,7 @@ sudo apt install -y ros-jazzy-desktop python3-colcon-common-extensions python3-r
 sudo rosdep init && rosdep update
 
 # Clone Home Scout
-git clone https://github.com/YOUR_USERNAME/home-scout.git ~/home-scout
+git clone https://github.com/m4cd4r4/home-scout.git ~/home-scout
 cd ~/home-scout
 
 # Install ROS 2 dependencies

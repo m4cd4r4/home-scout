@@ -1,6 +1,6 @@
 site_name: Home Scout
 site_description: A privacy-first home companion robot built on Arduino VENTUNO Q
-site_url: https://YOUR_USERNAME.github.io/home-scout/
+site_url: https://m4cd4r4.github.io/home-scout/
 
 theme:
   name: material

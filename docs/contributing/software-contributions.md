@@ -11,7 +11,7 @@ Scout's software stack covers ROS 2 nodes (Python), STM32/ESP32 firmware (C++), 
 One command gets you a full environment with ROS 2 Jazzy, PlatformIO, Python tools, and a pre-built workspace.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/home-scout.git
+git clone https://github.com/m4cd4r4/home-scout.git
 cd home-scout
 docker compose -f docker/docker-compose.dev.yml up
 ```
@@ -29,7 +29,7 @@ If you prefer a native install:
 sudo apt install -y ros-jazzy-desktop python3-colcon-common-extensions python3-rosdep
 
 # Clone and build
-git clone https://github.com/YOUR_USERNAME/home-scout.git
+git clone https://github.com/m4cd4r4/home-scout.git
 cd home-scout/ros2_ws
 rosdep install --from-paths src --ignore-src -y
 colcon build --symlink-install

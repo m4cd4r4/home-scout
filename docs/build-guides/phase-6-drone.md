@@ -76,4 +76,4 @@ Scout's chassis top plate serves as the drone landing pad. An ArUco marker on th
 
 ## What's Next
 
-You've completed all phases! Share your build in [GitHub Discussions](https://github.com/YOUR_USERNAME/home-scout/discussions) under "Show and Tell".
+You've completed all phases! Share your build in [GitHub Discussions](https://github.com/m4cd4r4/home-scout/discussions) under "Show and Tell".

@@ -70,7 +70,7 @@ There are many ways to help, and not all of them require hardware.
 One command gets you a full development environment.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/home-scout.git
+git clone https://github.com/m4cd4r4/home-scout.git
 cd home-scout
 docker compose up dev
 ```
@@ -89,7 +89,7 @@ If you prefer a native install:
 
 ```bash
 # Clone
-git clone https://github.com/YOUR_USERNAME/home-scout.git
+git clone https://github.com/m4cd4r4/home-scout.git
 cd home-scout
 
 # Install ROS 2 dependencies
@@ -393,6 +393,6 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 
 - Open a [Discussion](../../discussions) for general questions
 - Open an [Issue](../../issues) for bugs or feature requests
-- Tag `@YOUR_USERNAME` if you need maintainer input
+- Tag `@m4cd4r4` if you need maintainer input
 
 Thank you for helping build Scout.
