@@ -8,10 +8,13 @@
 *.onnx filter=lfs diff=lfs merge=lfs -text
 *.tflite filter=lfs diff=lfs merge=lfs -text
 
-# Images
+# Images (LFS for hardware/training assets, NOT for media/ used in README)
 *.png filter=lfs diff=lfs merge=lfs -text
 *.jpg filter=lfs diff=lfs merge=lfs -text
 *.gif filter=lfs diff=lfs merge=lfs -text
+media/*.png !filter !diff !merge binary
+media/*.jpg !filter !diff !merge binary
+media/*.gif !filter !diff !merge binary
 *.svg text
 
 # Ensure consistent line endings
