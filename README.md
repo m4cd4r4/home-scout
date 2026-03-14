@@ -208,6 +208,48 @@ Total: ~3.6 GB disk, ~5.4 GB RAM. Leaves 10.6 GB free on the 16 GB board.
 
 See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for full system design, NPU scheduling, object memory schema, and network topology.
 
+```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': {'primaryColor': '#0f172a', 'primaryTextColor': '#e2e8f0', 'primaryBorderColor': '#3b82f6', 'lineColor': '#64748b'}}}%%
+graph TB
+    classDef hw    fill:#1c1400,stroke:#f97316,color:#fdba74,font-weight:bold
+    classDef sense fill:#0f1f3d,stroke:#3b82f6,color:#93c5fd
+    classDef npu   fill:#160d2e,stroke:#8b5cf6,color:#c4b5fd,font-weight:bold
+    classDef ros   fill:#0a2520,stroke:#10b981,color:#6ee7b7
+    classDef stm   fill:#1c0a1c,stroke:#ec4899,color:#f9a8d4
+
+    subgraph SENSORS["Sensors"]
+        Mic["🎤 Dual INMP441\nI2S mics"]:::sense
+        Cam["📷 Arducam IMX477\nHQ MIPI-CSI"]:::sense
+        LIDAR["⭕ RPLIDAR C1\n360° SLAM"]:::sense
+        ToF["📡 4× VL53L1X\nToF proximity"]:::sense
+        IMU["🧭 BNO055 IMU"]:::sense
+    end
+
+    subgraph VENTUNO["VENTUNO Q — 40 TOPS NPU · 16 GB RAM  (Ubuntu 24.04 + ROS 2 Jazzy)"]
+        WW["openWakeWord\nHey Scout"]:::npu
+        ASR["Whisper-Small\nSpeech → Text"]:::npu
+        LLM["Llama 3.2 1B\nConversation"]:::npu
+        VLM["SmolVLM-256M\nObject Detection"]:::npu
+        Face["SCRFD + MobileFaceNet\nFace Recognition"]:::npu
+        Nav["ROS 2 Nav2\nSLAM + Path Plan"]:::ros
+        Mem["Object Memory\nSQLite encrypted"]:::ros
+        TTS["Piper TTS\nText → Speech"]:::npu
+    end
+
+    subgraph STM["STM32H5 — Zephyr RTOS"]
+        Motor["Motor PWM · PID"]:::stm
+        Safety["Safety Watchdog\nhardware e-stop"]:::stm
+    end
+
+    Mic --> WW --> ASR --> LLM --> TTS
+    Cam --> VLM --> Mem
+    Cam --> Face --> Mem
+    LIDAR & ToF & IMU --> Nav
+    LLM --> Nav
+    Nav -->|"CAN-FD"| Motor
+    Safety -.->|"override"| Motor
+```
+
 ## Hardware
 
 | Part | Model | Cost |
